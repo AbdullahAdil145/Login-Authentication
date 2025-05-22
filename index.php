@@ -3,8 +3,7 @@
 require_once ('user.php');
 
 $user = new User();
-$userlist = $user->get_all_users();
+$user_list = $user->get_all_users();
 
-print_r($userlist);
-
-?>
+echo "<pre>";
+print_r($user_list);
