@@ -10,7 +10,7 @@ session_start();
 <body>
 
 <h1>Register</h1>
-<form action="register_handler.php" method="post">
+<form action="registration.php" method="post">
   <label for="username">Username:</label><br>
   <input type="text" id="username" name="username" required><br>
 
