@@ -1,31 +1,24 @@
 <?php
+session_start();
+require_once('user.php');
 
-  session_start();
+$username = $_POST['username'];
+$password = $_POST['password'];
 
-  $valid_username = "Abdullah";
-  $valid_password = "Abdullah145";
+$user = new User();
+$user_data = $user->get_user_by_username($username);
 
-  $username = $_REQUEST['username'];
+if ($user_data && password_verify($password, $user_data['password'])) {
+  $_SESSION['authenticated'] = 1;
   $_SESSION['username'] = $username;
-  $password = $_REQUEST['password'];
-
-  if ($username == $valid_username && $password == $valid_password) {
-
-    $_SESSION['authenticated'] = 1;
-    header("Location: /index.php");
-
+  header("Location: /index.php");
+} else {
+  if (!isset($_SESSION['failed_attempts'])) {
+    $_SESSION['failed_attempts'] = 1;
   } else {
-
-    if (!isset($_SESSION['failed_attempts'])){
-      $_SESSION['failed_attempts'] = 1;
-
-    } else {
-      $_SESSION['failed_attempts'] = $_SESSION['failed_attempts'] + 1;
-
-    }
-
-    header("Location: /login.php");
-    echo "Unsuccessful Attempt Number: " . $_SESSION['failed_attempts'];
-
+    $_SESSION['failed_attempts']++;
   }
-?>
+
+  header("Location: /login.php");
+  exit;
+}
